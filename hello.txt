@@ -1,0 +1,38 @@
+Commands to upload files on github 
+
+git credential-cache exit
+
+git credential-cache --clear
+
+
+git config --global user.name "YourGitHubUsername"
+
+git config --global user.email "youremail@example.com"
+
+
+Verify the configuration:
+git config --global --list
+
+Open or Create Your Project Directory and Open it in Github repository
+
+git init
+
+git remote add origin https://github.com/YourUsername/TestWebApp.git
+
+
+git remote -v
+
+
+git add .
+
+
+git status
+
+
+git commit -m "Initial commit"
+
+
+git pull origin main --rebase
+
+
+git push -u origin main
