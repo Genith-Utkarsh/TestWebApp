@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Car Repair Help</title>
+ <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+ <style>
+ body {
+ font-family: 'Roboto', sans-serif;
+ background-color: #f9f9f9;
+ color: #333;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ padding: 20px;
+ margin: 0;
+ }
+
+ header {
+ width: 100%;
+ background-color: #333;
+ color: white;
+ padding: 10px 20px;
+ text-align: center;
+ font-size: 24px;
+ }
+
+ .content {
+ max-width: 800px;
+ text-align: center;
+ margin-top: 20px;
+ }
+
+ .content h1 {
+ color: #2e7d32;
+ font-size: 28px;
+ }
+
+ .search-bar {
+ margin: 20px 0;
+ display: flex;
+ justify-content: center;
+ }
+
+ .search-bar input {
+ padding: 10px;
+ font-size: 16px;
+ border: 1px solid #ccc;
+ border-radius: 5px;
+ flex: 1;
+ max-width: 500px;
+ }
+
+ .search-bar button {
+ padding: 10px 20px;
+ margin-left: 5px;
+ font-size: 16px;
+ background-color: #4CAF50;
+ color: white;
+ border: none;
+ border-radius: 5px;
+ cursor: pointer;
+ }
+
+ .search-bar button:hover {
+ background-color: #45a049;
+ }
+
+ .cards-container {
+ display: grid;
+ grid-template-columns: repeat(3, 200px);
+ row-gap: 100px;
+ column-gap: 60px;
+ justify-content: center;
+ margin-top: 30px;
+ }
+
+ .card {
+ padding: 20px;
+ border-radius: 10px;
+ background-color: white;
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+ text-align: center;
+ cursor: pointer;
+ transition: transform 0.3s, box-shadow 0.3s;
+ }
+
+ .card:hover {
+ transform: translateY(-5px);
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+ }
+
+ .card h3 {
+ margin: 0;
+ color: #2e7d32;
+ font-size: 24px;
+ }
+
+ .card select {
+ max-width: 100%;
+ width: 100%;
+ margin-top: 10px;
+ padding: 5px;
+ box-sizing: border-box;
+ border: 1px solid #ccc;
+ border-radius: 5px;
+ }
+
+ .popup {
+ display: none;
+ position: fixed;
+ left: 50%;
+ top: 50%;
+ transform: translate(-50%, -50%);
+ background-color: #fff;
+ padding: 20px;
+ border: 1px solid #ddd;
+ border-radius: 10px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ z-index: 1000;
+ max-width: 90%;
+ max-height: 80%;
+ overflow-y: auto;
+ text-align: center;
+ }
+
+ .popup h2 {
+ margin-top: 0;
+ }
+
+ .popup img {
+ max-width: 100%;
+ height: auto;
+ margin-bottom: 10px;
+ }
+
+ .popup .close {
+ display: block;
+ text-align: right;
+ cursor: pointer;
+ color: #888;
+ font-size: 18px;
+ }
+
+ .popup .close:hover {
+ color: #555;
+ }
+
+ .overlay {
+ display: none;
+ position: fixed;
+ left: 0;
+ top: 0;
+ width: 100%;
+ height: 100%;
+ background: rgba(0, 0, 0, 0.5);
+ z-index: 999;
+ }
+
+ footer {
+ width: 100%;
+ background-color: #333;
+ color: white;
+ padding: 20px 0;
+ margin-top: 40px;
+ }
+
+ .footer-container {
+ display: flex;
+ justify-content: space-around;
+ max-width: 1200px;
+ margin: 0 auto;
+ text-align: left;
+ }
+
+ .footer-section {
+ width: 30%;
+ padding: 0 15px;
+ }
+
+ .footer-section h3 {
+ margin-top: 0;
+ margin-bottom: 10px;
+ color: #f1f1f1;
+ font-size: 20px;
+ }
+
+ .footer-section p {
+ margin: 5px 0;
+ font-size: 14px;
+ color: #ccc;
+ }
+
+ @media (max-width: 768px) {
+ .footer-container {
+ flex-direction: column;
+ text-align: center;
+ }
+
+ .footer-section {
+ width: 100%;
+ margin-bottom: 20px;
+ }
+ }
+
+ .help-button {
+ position: fixed;
+ bottom: 20px;
+ right: 20px;
+ background-color: #4CAF50;
+ color: white;
+ padding: 15px 20px;
+ font-size: 16px;
+ border: none;
+ border-radius: 50px;
+ cursor: pointer;
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+ transition: background-color 0.3s, transform 0.3s;
+ }
+
+ .help-button:hover {
+ background-color: #45a049;
+ transform: scale(1.05);
+ }
+ .help-button:hover {
+ background-color: #45a049;
+ transform: scale(1.05);
+ }
+ body {
+ font-family: 'Roboto', sans-serif;
+ background-image: url('/Users/aditya/Documents/ASEP PRO/Back3.jpeg'); /* Replace with your image path */
+ background-size: cover; /* Ensures the image covers the entire screen */
+ background-repeat: no-repeat; /* Prevents the image from repeating */
+ background-position: center; /* Centers the image */
+ color: #333;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ padding: 20px;
+ margin: 0;
+ }
+ /* Chatbot styles */
+ .chat-button {
+ position: fixed;
+ bottom: 20px;
+ left: 20px;
+ background-color: #007bff;
+ color: white;
+ border: none;
+ border-radius: 50%;
+ width: 60px;
+ height: 60px;
+ font-size: 24px;
+ text-align: center;
+ cursor: pointer;
+ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+ }
+
+ .chat-window {
+ display: none;
+ position: fixed;
+ bottom: 90px;
+ left: 20px;
+ width: 300px;
+ height: 400px;
+ border: 1px solid #ccc;
+ border-radius: 10px;
+ background-color: white;
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+ z-index: 1000;
+ overflow: hidden;
+ }
+
+ .chat-header {
+ background-color: #007bff;
+ color: white;
+ padding: 10px;
+ text-align: center;
+ font-size: 18px;
+ }
+
+ .chat-messages {
+ height: calc(100% - 100px);
+ overflow-y: auto;
+ padding: 10px;
+ background: #f9f9f9;
+ }
+
+ .chat-input {
+ display: flex;
+ padding: 10px;
+ border-top: 1px solid #ccc;
+ }
+
+ .chat-input input {
+ flex: 1;
+ padding: 8px;
+ border: 1px solid #ccc;
+ border-radius: 5px;
+ margin-right: 5px;
+ }
+
+ .chat-input button {
+ padding: 8px 10px;
+ background-color: #007bff;
+ color: white;
+ border: none;
+ border-radius: 5px;
+ cursor: pointer;
+ }
+ </style>
+</head>
+<body>
+
+<header>
+ <h1>Car Repair Assistance</h1>
+</header>
+
+<div class="content">
+ <h1>ENGINES</h1>
+ <p>ANY PROBLEMS WITH THE ENGINE? YOU ARE AT THE RIGHT PLACE!</p>
+<!-- Search Bar -->
+ <div class="search-bar">
+ <input type="text" id="searchInput" placeholder="Search your problem...">
+ <button onclick="searchProblems()">Search</button>
+ </div>
+</div>
+</head>
+<body>
+ 
+ <div class="cards-container">
+ <!-- Cards with Dropdowns -->
+ <div class="card">
+ <h3>1</h3>
+ <p>ENGINE MISSFIRING</p>
+ <select onchange="optionClicked(this.value)">
+ <option value="" selected disabled>Select Option</option>
+ <option value="A">ROUGH IDILING OR RUNNING </option>
+ <option value="B"> REDUCE FULE EFFICIENCY</option>
+ <option value="C">ENGINE SHAKING OR JERKING.</option> 
+ </select>
+ </div>
+
+ <div class="card">
+ <h3>2</h3>
+ <p>REGULAR MAINTAINANCE TIP </p>
+ <select onchange="optionClicked(this.value)">
+ <option value="" selected disabled>Select Option</option>
+ <option value="D">CHECK OIL THROUGH METER </option>
+ <option value="E">OVERHEATING</option>
+ <option value="F"> BATTERY ISSUE</option>
+ </select> 
+ </div>
+
+ <div class="card">
+ <h3>3</h3>
+ <p>ENNGINE OVERHEATING </p>
+ <select onchange="optionClicked(this.value)">
+ <option value="" selected disabled>Select Option</option>
+ <option value="G">TEMPERATURE GAUGE RISING ABOVE NORMAL </option>
+ <option value="H">Steam coming from the hood</option>
+ <option value="I">Coolant leaking under the car</option>
+ </select>
+ </div>
+
+ <div class="card">
+ <h3>4</h3>
+ <p>OIL LEAKS </p>
+ <select onchange="optionClicked(this.value)">
+ <option value="" selected disabled>Select Option</option>
+ <option value="J">Oil spots under the car.</option>
+ <option value="K">Burning oil smell</option>
+ <option value="L">Low oil levels on the dipstick.</option>
+ </select>
+ </div>
+
+ <div class="card">
+ <h3>5</h3>
+ <p>FAULTY ALTERNATOR </p>
+ <select onchange="optionClicked(this.value)">
+ <option value="" selected disabled>Select Option</option>
+ <option value="M">Car won’t start or starts with difficulty.</option>
+ <option value="N">Battery warning light on the dashboard.</option>
+ <option value="O">Electrical accessories, like lights or radio, not working properly.</option>
+ </select>
+ </div>
+
+ <div class="card">
+ <h3>6</h3>
+ <p>COOLANT LEAKS</p>
+ <select onchange="optionClicked(this.value)">
+ <option value="" selected disabled>Select Option</option>
+ <option value="P"> Radiator Leak</option>
+ <option value="Q">Hose Leak</option>
+ <option value="R">Regular Maintenance Tips for Coolant System:</option>
+ </select>
+ </div>
+ </div>
+</div>
+<!-- Footer Section -->
+<footer>
+ <div class="footer-container">
+ <div class="footer-section">
+ <h3>About Us</h3>
+ <p>We are committed to helping you solve car-related problems efficiently and affordably.</p>
+ </div>
+
+ <div class="footer-section">
+ <h3>Help</h3>
+ <p>Need assistance? Browse our FAQs or contact support for more information.</p>
+ </div>
+
+ <div class="footer-section">
+ <h3>Contact</h3>
+ <p>Email: support@carrepairhelp.com</p>
+ <p>Phone: +123 456 7890</p>
+ </div>
+ </div>
+</footer>
+<!-- Popups and Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Popups for different options -->
+<div class="popup" id="popupA">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>CHECK AND REPLACE SPARK PULG:</h2>
+ <img src="/Users/aditya/Documents/ASEP PRO/Bonet.jpeg" alt="Spark Plugs">
+ <img src="/Users/aditya/Documents/ASEP PRO/x.jpeg" alt="Spark Plugs">
+ <img src="/Users/aditya/Documents/ASEP PRO/y.jpeg" alt="Spark Plugs">
+ <img src="/Users/aditya/Documents/ASEP PRO/z.jpeg" alt="Spark Plugs">
+ <img src="/Users/aditya/Documents/ASEP PRO/a.jpeg" alt="Spark Plugs">
+ <img src="/Users/aditya/Documents/ASEP PRO/b.jpeg" alt="Spark Plugs">
+ <p>Inspect the spark plugs for wear and tear. Replace any faulty spark plugs.</p>
+</div>
+
+
+<div class="popup" id="popupB">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Inspect Ignition Coils:</h2>
+ <p>1. Maintain Your Vehicle Regularly Regular maintenance keeps your engine tuned and improves car mileage. </p>
+ <img src="/Users/aditya/Documents/ASEP PRO/Op2_Img1.jpeg" alt="Spark Plugs">
+ <p>2. Drive at the Best Speed Driving speed is essential when it comes to ways to save fuel</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/Op2_img2.jpeg" alt="Spark Plugs">
+ <p>3. Turn Off Engine when Idle</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/Op2_Img3.jpeg" alt="Spark Plugs">
+ <p> 4. Use Quality Fuel & Lubricants</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/Op2_Img4.jpeg" alt="Spark Plugs">
+ <p> 5. Reduce Excess Weight</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/Op2_Img5.jpeg" alt="Spark Plugs">
+ 
+ <p>Check for damaged or malfunctioning ignition coils.
+
+ Replace any defective ignition coils.</p>
+</div>
+<div class="popup" id="popupC">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Clean or Replace Fuel Injectors:</h2>
+ <p> Use a fuel injector cleaner to remove any build-up.
+
+ If cleaning doesn't help, consider replacing the faulty fuel injectors.
+</p>
+</div>
+<div class="popup" id="popupD">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Change the engine oil and filter according to the</h2>
+ <h2>Inspect Ignition Coils:</h2>
+ <P> Step 1 – Let the engine cool When the engine runs, the metal surface of the car’s engine gets extremely hot</P>
+ <img src="/Users/aditya/Documents/ASEP PRO/img1.jpeg" alt="Spark Plugs">
+ <img src="/Users/aditya/Documents/ASEP PRO/img2.jpeg" alt="Spark Plugs">
+ <img src="/Users/aditya/Documents/ASEP PRO/img3.jpeg" alt="Spark Plugs">
+ <p> Step 2 – Pull out and clean the oil dipstick The Engine oil level is measured with a dipstick.s</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/img4.jpeg" alt="Spark Plugs">
+ <p> Step 3- Check the oil film on the dipstick</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/img5.jpeg" alt="Spark Plugs">
+ <p>Step 4 – Top up the engine oil and repeat the process. </p>
+ <img src="/Users/aditya/Documents/ASEP PRO/img6.jpeg" alt="Spark Plugs">
+ <p> USE THE CORRECT TYPE OF GRADE OIL FOR YOUR VECHICLE RECCOMENDED BY THE MECHANIC </p>
+</div>
+<div class="popup" id="popupE">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Check Coolant Levels:</h2>
+ <p> 1. Turn Off the Air Conditioning: If your engine is overheating, turn off the air conditioning to reduce the load on the engine</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/1.jpeg" alt="Spark Plugs">
+ <p>Pull Over and Turn Off the Engine: Safely pull over to the side of the road and turn off the engine. Let the engine cool down before attempting any further inspection </p>
+ <img src="/Users/aditya/Documents/ASEP PRO/2.jpeg" alt="Spark Plugs">
+ <p>3. Check Coolant Levels: Once the engine has cooled, check the coolant level in the radiator or coolant reservoir. If it's low, top it off with the appropriate coolant mixture </p>
+ <img src="/Users/aditya/Documents/ASEP PRO/3.jpeg" alt="Spark Plugs">
+ <p> 4. Inspect for Leaks: Look for any visible leaks in the cooling system, including hoses, the radiator, and the water pump. Leaks can cause a loss of coolant and lead to overheating.</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/4.jpeg" alt="Spark Plugs">
+ <p> Check the Radiator Cap: Ensure the radiator cap is properly sealed and not damaged .A faulty radiator cap can cause coolant to escape or not maintain the correct pressure.</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/5.jpeg" alt="Spark Plugs">
+ <p> 6. Bleed the Cooling System: Air pockets in the cooling system can cause overheating
+ Bleed the system to remove any trapped air</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/7.jpeg" alt="Spark Plugs">
+ <p>7. Inspect the Thermostat: A stuck thermostat can prevent coolant from circulating properly. Check if the thermostat is opening and closing correctly </p>
+ <img src="/Users/aditya/Documents/ASEP PRO/8.jpeg" alt="Spark Plugs">
+ <p> 8. Check the Cooling Fans: Ensure the cooling fans are working properly. Test the fans and check the fuses and relays for the fan circuit</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/10.jpeg" alt="Spark Plugs">
+ <p> 9. Inspect the Water Pump: A failing water pump can lead to overheating. Check for any signs of wear or damage</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/11.jpeg" alt="Spark Plugs">
+ <p>Regularly check the coolant level and top it up if needed.
+
+ Use the correct type of coolant specified by the manufacturer.
+ 
+ Inspect Radiator and Hoses:
+ 
+ Check for any leaks or damage to the radiator and hoses.
+ 
+ Clean the radiator fins to ensure proper airflow.
+ </p>
+</div>
+<div class="popup" id="popupF">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2> Regular Battery Inspection:</h2>
+ <p>1. Regular Inspection: Check your battery regularly for any signs of corrosion, leaks, or damage. Look at the terminals and cables for any signs of corrosion or loose connections.</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/15.jpeg" alt="Spark Plugs">
+ <p> 2. Clean the Battery Terminals: Corrosion can build up on the battery terminals, affecting performance. Clean them with a mixture of baking soda and water, using a brush to scrub away any buildup.</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/16.jpeg" alt="Spark Plugs">
+ <p> 3. Secure the Battery: Make sure the battery is properly secured in its tray. A loose battery can vibrate and cause internal damage or short circuits.</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/17.jpeg" alt="Spark Plugs">
+ <p>4. Keep the Battery Charged: If you don't drive your car often, consider using a trickle charger to keep the battery charged. Short trips can also prevent the battery from fully charging, so try to drive longer distances occasionally. </p>
+ <img src="/Users/aditya/Documents/ASEP PRO/18.jpeg" alt="Spark Plugs">
+ <p> 5. Check the Electrolyte Level: For batteries that are not maintenance-free, check the electrolyte level and top it off with distilled water if necessary. Make sure not to overfill.</p>
+ <img src="/Users/aditya/Documents/ASEP PRO/19.jpeg" alt="Spark Plugs">
+ <p>6. Test the Battery: Have your battery tested periodically, especially before winter or long trips. Most auto parts stores offer free battery testing. </p>
+ <img src="/Users/aditya/Documents/ASEP PRO/20.jpeg" alt="Spark Plugs">
+ <p>Check the battery terminals and cables for corrosion and clean them if necessary.
+
+ Ensure the battery is securely mounted and connections are tight.
+ 
+ Test Battery Voltage:
+ 
+ Use a multimeter to check the battery voltage regularly. A fully charged battery should read around 12.6 volts.
+ </p>
+</div>
+<div class="popup" id="popupG">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Check Coolant Levels:</h2>
+ <p>Ensure the coolant reservoir is filled to the appropriate level.
+
+ Refill with the correct coolant type if necessary.
+ </p>
+</div>
+<div class="popup" id="popupH">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Inspect the Thermostat</h2>
+ <p>Check if the thermostat is opening and closing properly.
+
+ Replace the thermostat if it's faulty.</p>
+</div>
+<div class="popup" id="popupI">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Radiator Maintenance:</h2>
+ <p>Clean the radiator fins to remove any debris or dirt.
+
+ Check for any blockages in the radiator and flush it if needed.
+ </p>
+</div>
+<div class="popup" id="popupJ">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Regular Oil Changes:</h2>
+ <p>Change the engine oil and filter according to the manufacturer’s recommended intervals.
+
+ Use the correct type and grade of oil for your vehicle.</p>
+</div>
+<div class="popup" id="popupK">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Inspect for Leaks:</h2>
+ <p>Regularly check for any signs of oil leaks around the engine.
+
+ Inspect the gaskets and seals for wear and replace them if necessary..</p>
+</div>
+<div class="popup" id="popupL">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Tighten Oil Pan Bolts:</h2>
+ <p>Ensure the oil pan bolts are properly tightened to prevent leaks.</p>
+</div>
+<div class="popup" id="popupM">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Inspect Alternator Belt:</h2>
+ <p>Ensure the alternator belt is not loose, worn, or broken. Replace it if necessary to ensure proper function.
+ </p>
+</div>
+<div class="popup" id="popupN">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Test Alternator Output:T</h2>
+ <p>Use a voltmeter to check the alternator's output voltage. It should be around 13.8 to 14.2 volts when the engine is running. If the output is outside this range, the alternator may need to be repaired or replaced.
+ </p>
+</div>
+<div class="popup" id="popupO">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Check Battery Health:</h2>
+ <p>Test the battery to ensure it’s still in good condition. Sometimes, a faulty alternator can damage the battery, which would also need to be replaced.
+ .</p>
+</div>
+<div class="popup" id="popupP">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Inspect Radiator:</h2>
+ <p>Check the radiator for any visible signs of leaks, corrosion, or physical damage.
+
+ If the damage is minor, consider using a radiator leak sealant as a temporary fix.
+ 
+ Replace Radiator:
+ 
+ If the radiator is significantly damaged or corroded, it may need to be replaced entirely.
+ 
+ Ensure the new radiator is properly installed and filled with the correct type of coolant.
+ 
+ Maintain Coolant Levels:
+ 
+ Regularly check and maintain the coolant levels in the reservoir to prevent overheating.
+ </p>
+</div>
+<div class="popup" id="popupQ">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Inspect and Tighten Hoses:</h2>
+ <p>Check all coolant hoses for signs of wear, cracking, or swelling.
+
+ Ensure all hose clamps are tight and secure.
+ 
+ Replace Damaged Hoses:
+ 
+ If any hoses are found to be damaged, replace them with new ones.
+ 
+ Use high-quality hoses and clamps to ensure a secure fit.
+ 
+ Regular Hose Maintenance:
+ 
+ Periodically inspect hoses for signs of wear and replace them as part of routine maintenance to prevent future leaks.
+ .</p>
+</div>
+<div class="popup" id="popupR">
+ <span class="close" onclick="closePopup()">&times;</span>
+ <h2>Regular Coolant Checks:</h2>
+ <p>Frequently check the coolant levels and top up if necessary with the correct type of coolant.
+
+ Flush Coolant System:
+ 
+ Periodically flush the coolant system to remove any debris or contaminants that could cause blockages or corrosion.
+ 
+ Monitor Temperature Gauge:
+ 
+ Keep an eye on the temperature gauge to catch any signs of overheating early and address them promptly.
+ </p>
+</div>
+<!-- Chatbot Button -->
+<button class="chat-button" onclick="toggleChat()">💬</button>
+
+<!-- Chatbot Window -->
+<div class="chat-window" id="chatWindow">
+ <div class="chat-header">Chat with Us!</div>
+ <div class="chat-messages" id="chatMessages"></div>
+ <div class="chat-input">
+ <input type="text" id="chatInput" placeholder="Type your message...">
+ <button onclick="sendMessage()">Send</button>
+ </div>
+</div>
+
+<!-- Help Button -->
+<button class="help-button" onclick="openHelpPage()">Need More Help?</button>
+
+<script>
+ // Chatbot functionality
+ function toggleChat() {
+ const chatWindow = document.getElementById("chatWindow");
+ chatWindow.style.display = chatWindow.style.display === "block" ? "none" : "block";
+ }
+
+ function sendMessage() {
+ const input = document.getElementById("chatInput");
+ const messages = document.getElementById("chatMessages");
+ const userMessage = input.value.trim();
+ 
+ if (userMessage) {
+ const messageElement = document.createElement("div");
+ messageElement.textContent = "You: " + userMessage;
+ messages.appendChild(messageElement);
+
+ // Simulate chatbot response
+ const botMessageElement = document.createElement("div");
+ botMessageElement.textContent = "Bot: Thank you for your query!";
+ botMessageElement.style.color = "gray";
+ messages.appendChild(botMessageElement);
+
+ messages.scrollTop = messages.scrollHeight; // Auto-scroll
+ input.value = ""; // Clear input
+ }
+ }
+ 
+ function optionClicked(option) {
+ document.querySelectorAll(".popup").forEach(popup => popup.style.display = "none");
+ const popup = document.getElementById(`popup${option}`);
+ if (popup) {
+ popup.style.display = "block";
+ document.getElementById("overlay").style.display = "block";
+ }
+ }
+ 
+ function closePopup() {
+ document.querySelectorAll(".popup").forEach(popup => popup.style.display = "none");
+ document.getElementById("overlay").style.display = "none";
+ }
+ 
+ // Search Functionality
+ function searchProblems() {
+ const input = document.getElementById("searchInput").value.toLowerCase();
+ const cards = document.querySelectorAll(".card");
+ 
+ cards.forEach(card => {
+ const cardText = card.querySelector("p").textContent.toLowerCase();
+ card.style.display = cardText.includes(input) ? "block" : "none";
+ });
+ }
+ 
+
+function openHelpPage() {
+ window.location.href = "query.html"; // Redirect to the query page
+}
+
+function searchProblems() {
+ const input = document.getElementById("searchInput").value.toLowerCase();
+ alert(`Searching for: ${input}`);
+}
+
+</script>
+
+</body>
+</html>

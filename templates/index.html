@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="logo.jpg"/>
+    <title>What Are You Looking For?</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #575757;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            right: 1rem;
+        }
+
+        .profile img {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            margin-right: 0.5rem;
+        }
+
+        .container {
+            flex: 1;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            margin: 2rem 0;
+        }
+
+        .search-bar input[type="text"] {
+            width: 50%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 0.5rem;
+        }
+
+        .search-bar input[type="submit"] {
+            padding: 0.5rem 1rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .search-bar select {
+            width: 20%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .key-components {
+            display: flex;
+            justify-content: center;
+        }
+
+        .key-components .component {
+            flex: 1;
+            margin: 0.5rem;
+            padding: 1rem;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .key-components .component:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .key-components .component h2 {
+            color: #4CAF50;
+            margin-bottom: 0.5rem;
+        }
+
+        .key-components .component h2 a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .key-components .component p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        .footer-section {
+            margin: 0 1rem;
+        }
+
+        .footer-section h2 {
+            color: #4CAF50;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section p {
+            color: #ccc;
+            line-height: 1.5;
+        }
+
+    </style>
+</head>
+<body>
+
+    
+    <div class="navbar">
+        <div>
+            <a href="#">Home</a>
+            <a href="#">Services</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+        <div class="profile">
+            <img src="profile.jpg" alt="Profile Picture">
+            <a href="http://127.0.0.1:5000/profile">Profile</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>What Are You Looking For?</h1>
+        <p>Your go-to place for car repair and maintenance advice.</p>
+
+        <div class="search-bar">
+            <select>
+                <option disabled selected>Choose Car</option>
+                <option value="car1">Car 1</option>
+                <option value="car2">Car 2</option>
+                <option value="car3">Car 3</option>
+                <option value="car4">Car 4</option>
+                <option value="car5">Car 5</option>
+            </select>
+            <input type="text" placeholder="Search your problem...">
+            <input type="submit" value="Search">
+        </div>
+
+        <div class="key-components">
+            <div class="component">
+                <h2><a href="http://127.0.0.1:5000/engine">Engine Repair</a></h2>
+                <p>Expert advice on fixing engine problems.</p>
+            </div>
+            <div class="component">
+                <h2><a href="http://127.0.0.1:5000/brake">Brake Systems</a></h2>
+                <p>Learn how to maintain and repair your brakes.</p>
+            </div>
+            <div class="component">
+                <h2><a href="http://127.0.0.1:5000/trans">Transmission</a></h2>
+                <p>Tips on keeping your transmission running smoothly.</p>
+            </div>
+        </div>
+    </div>
+
+
+ 
+
+    <footer>
+        <div class="footer-section">
+            <h2>About Us</h2>
+            <p>We provide top-notch car maintenance and repair advice.</p>
+        </div>
+        <div class="footer-section">
+            <h2>Contact</h2>
+            <p>Reach out to us with your questions. We're here to help!</p>
+        </div>
+        <div class="footer-section">
+            <h2>Help</h2>
+            <p>Visit our help section for FAQs, tutorials, and guides.</p>
+        </div>
+    </footer>
+
+
+    <!-- --------------------------------------------Chat Bot---------------------------------------------------------- -->
+
+
+
+</body>
+</html>

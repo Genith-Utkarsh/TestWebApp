@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Car Repair Help</title>
+   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+   <style>
+      body {
+           font-family: 'Roboto', sans-serif;
+           background-color: #f9f9f9;
+           color: #333;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           padding: 20px;
+           margin: 0;
+       }
+
+       header {
+           width: 100%;
+           background-color: #333;
+           color: white;
+           padding: 10px 20px;
+           text-align: center;
+           font-size: 24px;
+       }
+
+       .content {
+           max-width: 800px;
+           text-align: center;
+           margin-top: 20px;
+       }
+
+       .content h1 {
+           color: #2e7d32;
+           font-size: 28px;
+       }
+
+       .search-bar {
+           margin: 20px 0;
+           display: flex;
+           justify-content: center;
+       }
+
+       .search-bar input {
+           padding: 10px;
+           font-size: 16px;
+           border: 1px solid #ccc;
+           border-radius: 5px;
+           flex: 1;
+           max-width: 500px;
+       }
+
+       .search-bar button {
+           padding: 10px 20px;
+           margin-left: 5px;
+           font-size: 16px;
+           background-color: #4CAF50;
+           color: white;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+       }
+
+       .search-bar button:hover {
+           background-color: #45a049;
+       }
+
+       .cards-container {
+           display: grid;
+           grid-template-columns: repeat(3, 200px);
+           row-gap: 100px;
+           column-gap: 60px;
+           justify-content: center;
+           margin-top: 30px;
+       }
+
+       .card {
+           padding: 20px;
+           border-radius: 10px;
+           background-color: white;
+           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+           text-align: center;
+           cursor: pointer;
+           transition: transform 0.3s, box-shadow 0.3s;
+       }
+
+       .card:hover {
+           transform: translateY(-5px);
+           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+       }
+
+       .card h3 {
+           margin: 0;
+           color: #2e7d32;
+           font-size: 24px;
+       }
+       /* Ensuring select stays in the frame */
+       .card select {
+           max-width: 100%;
+           width: 100%;
+           margin-top: 10px;
+           padding: 5px;
+           box-sizing: border-box; /* Ensures padding is contained */
+           border: 1px solid #ccc;
+           border-radius: 5px;
+       }
+
+
+       .popup {
+           display: none;
+           position: fixed;
+           left: 50%;
+           top: 50%;
+           transform: translate(-50%, -50%);
+           background-color: #fff;
+           padding: 20px;
+           border: 1px solid #ddd;
+           border-radius: 10px;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+           z-index: 1000;
+           width: 300px;
+           text-align: center;
+       }
+
+       .popup h2 {
+           margin-top: 0;
+       }
+
+       .popup .close {
+           display: block;
+           text-align: right;
+           cursor: pointer;
+           color: #888;
+           font-size: 18px;
+       }
+
+       .popup .close:hover {
+           color: #555;
+       }
+
+       .overlay {
+           display: none;
+           position: fixed;
+           left: 0;
+           top: 0;
+           width: 100%;
+           height: 100%;
+           background: rgba(0, 0, 0, 0.5);
+           z-index: 999;
+       }
+       /* Footer Styles */
+       footer {
+           width: 100%;
+           background-color: #333;
+           color: white;
+           padding: 20px 0;
+           margin-top: 40px;
+       }
+
+       .footer-container {
+           display: flex;
+           justify-content: space-around;
+           max-width: 1200px;
+           margin: 0 auto;
+           text-align: left;
+       }
+
+       .footer-section {
+           width: 30%;
+           padding: 0 15px;
+       }
+
+       .footer-section h3 {
+           margin-top: 0;
+           margin-bottom: 10px;
+           color: #f1f1f1;
+           font-size: 20px;
+       }
+
+       .footer-section p {
+           margin: 5px 0;
+           font-size: 14px;
+           color: #ccc;
+       }
+
+       @media (max-width: 768px) {
+           .footer-container {
+               flex-direction: column;
+               text-align: center;
+           }
+
+           .footer-section {
+               width: 100%;
+               margin-bottom: 20px;
+           }
+       }
+
+       /* Help Button Styles */
+       .help-button {
+           position: fixed;
+           bottom: 20px;
+           right: 20px;
+           background-color: #4CAF50;
+           color: white;
+           padding: 15px 20px;
+           font-size: 16px;
+           border: none;
+           border-radius: 50px;
+           cursor: pointer;
+           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+           transition: background-color 0.3s, transform 0.3s;
+       }
+
+       .help-button:hover {
+           background-color: #45a049;
+           transform: scale(1.05);
+       }
+   </style>
+</head>
+<body>
+
+<header>
+   <h1>Car Repair Assistance</h1>
+</header>
+
+<div class="content">
+   <h1>TRANSMISSION</h1>
+   <p>ANY PROBLEMS WITH THE TRANSMISSION? YOU ARE AT THE RIGHT PLACE!</p>
+
+   <div class="search-bar">
+       <input type="text" id="searchInput" placeholder="Search your problem...">
+       <button onclick="searchProblems()">Search</button>
+   </div>
+
+   <div class="cards-container">
+       <div class="card">
+           <h3>1</h3>
+           <p> Transmission Fluid Leak</p>
+           <select onchange="optionClicked(this.value)">
+               <option value="" selected disabled>Select Option</option>
+               <option value="A">Damaged Seals: Worn-out or damaged seals can cause fluid leaks.</option>
+               <option value="B"> Loose Connections: Loose or improperly tightened connections can lead to leaks.</option>
+               <option value="C">Corrosion: Corrosion on transmission components can cause leaks.
+               </option>
+           </select>
+       </div>
+       <div class="card">
+           <h3>2</h3>
+           <p> Transmission Slipping
+           </p>
+           <select onchange="optionClicked(this.value)">
+               <option value="" selected disabled>Select Option</option>
+               <option value="D">Worn Clutches: Clutches can wear out over time, causing slipping.</option>
+               <option value="E"> Faulty Solenoids: Defective solenoids can lead to improper gear engagement.
+               </option>
+               <option value="F"> Low Fluid Levels: Insufficient transmission fluid can cause slipping.
+               </option>
+           </select>
+       </div>
+       <div class="card">
+           <h3>3</h3>
+           <p>Delayed Gear Engagement
+           </p>
+           <select onchange="optionClicked(this.value)">
+               <option value="" selected disabled>Select Option</option>
+               <option value="G">Low Fluid Pressure: Low fluid pressure can cause delays in gear engagement.</option>
+               <option value="H"> Dirty Transmission Filter: A clogged filter can restrict fluid flow.
+               </option>
+               <option value="I">Faulty Transmission Control Module (TCM): A malfunctioning TCM can cause delays.
+               </option>
+           </select>
+       </div>
+       <div class="card">
+           <h3>4</h3>
+           <p>Harsh Gear Shifting
+           </p>
+           <select onchange="optionClicked(this.value)">
+               <option value="" selected disabled>Select Option</option>
+               <option value="J">Worn Transmission Bands: Worn bands can cause harsh shifting.</option>
+               <option value="K">Improper Fluid Type: Using the wrong type of transmission fluid can lead to harsh shifts.</option>
+               <option value="L">Dirty Transmission Components: Dirt and debris can cause rough shifting.
+               </option>
+           </select>
+       </div>
+       <div class="card">
+           <h3>5</h3>
+           <p> Transmission Overheating
+           </p>
+           <select onchange="optionClicked(this.value)">
+               <option value="" selected disabled>Select Option</option>
+               <option value="M"> Low Fluid Levels: Low fluid levels can cause overheating.</option>
+               <option value="N"> Blocked Cooling Lines: Blocked cooling lines can prevent proper cooling.</option>
+               <option value="O"> Faulty Cooling Fan: A malfunctioning cooling fan can lead to overheating.
+               </option>
+           </select>
+       </div>
+       <div class="card">
+           <h3>6</h3>
+           <p>Unusual Noises
+           </p>
+           <select onchange="optionClicked(this.value)">
+               <option value="" selected disabled>Select Option</option>
+               <option value="P">Worn Bearings: Worn bearings can cause unusual noises.</option>
+               <option value="Q">Loose Components: Loose or damaged components can create noise
+               </option>
+               <option value="R">Lack of Lubrication: Insufficient lubrication can lead to noise.
+               </option>
+           </select>
+       </div>
+   </div>
+</div>
+
+<footer>
+   <div class="footer-container">
+       <div class="footer-section">
+           <h3>About Us</h3>
+           <p>We are committed to helping you solve car-related problems efficiently and affordably.</p>
+       </div>
+       <div class="footer-section">
+           <h3>Help</h3>
+           <p>Need assistance? Browse our FAQs or contact support for more information.</p>
+       </div>
+       <div class="footer-section">
+           <h3>Contact</h3>
+           <p>Email: support@carrepairhelp.com</p>
+           <p>Phone: +123 456 7890</p>
+       </div>
+   </div>
+</footer>
+<!-- Popups and Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Popups for different options -->
+<div class="popup" id="popupA">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Damaged Seals: Worn-out or damaged seals can cause fluid leaks.</h2>
+   <p>Inspect and Replace Seals: Regularly inspect seals and replace them if damaged</p>
+</div>
+
+<div class="popup" id="popupB">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Loose Connections: Loose or improperly tightened connections can lead to leaks.</h2>
+   <p>Tighten Connections: Ensure all connections are properly tightened.</p>
+</div>
+<div class="popup" id="popupC">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Corrosion: Corrosion on transmission components can cause leaks.
+   </h2>
+   <p>Clean and Protect Components: Clean corroded parts and apply protective coatings.</p>
+</div>
+<div class="popup" id="popupD">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Worn Clutches: Clutches can wear out over time, causing slipping.</h2>
+   <p>Replace Clutches: Replace worn clutches as needed. </p>
+</div>
+<div class="popup" id="popupE">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Faulty Solenoids: Defective solenoids can lead to improper gear engagement</h2>
+   <p> Repair or Replace Solenoids: Fix or replace faulty solenoids. </p>
+</div>
+<div class="popup" id="popupF">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Low Fluid Levels: Insufficient transmission fluid can cause slipping</h2>
+   <p>Refill Transmission Fluid: Maintain proper fluid levels and top up if necessary</p>
+</div>
+<div class="popup" id="popupG">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Low Fluid Pressure: Low fluid pressure can cause delays in gear engagement.</h2>
+   <p>Check and Adjust Fluid Pressure: Ensure proper fluid pressure and adjust if needed.</p>
+</div>
+<div class="popup" id="popupH">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Dirty Transmission Filter: A clogged filter can restrict fluid flow. </h2>
+   <p>Replace Transmission Filter: Regularly replace the transmission filter.
+   </p>
+</div>
+<div class="popup" id="popupI">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Faulty Transmission Control Module (TCM): A malfunctioning TCM can cause delays.</h2>
+   <p>Diagnose and Repair TCM: Use diagnostic tools to identify and fix TCM issues.</p>
+</div>
+<div class="popup" id="popupJ">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Worn Transmission Bands: Worn bands can cause harsh shifting.
+   </h2>
+   <p>Replace Transmission Bands: Replace worn bands as needed.
+   </p>
+</div>
+<div class="popup" id="popupK">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Improper Fluid Type: Using the wrong type of transmission fluid can lead to harsh shifts.
+   </h2>
+   <p>Use Correct Fluid Type: Ensure the correct fluid type is used. </p>
+</div>
+<div class="popup" id="popupL">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2> Dirty Transmission Components: Dirt and debris can cause rough shifting.
+   </h2>
+   <p>Clean Transmission Components: Regularly clean and maintain transmission components.
+   </p>
+</div>
+<div class="popup" id="popupM">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Low Fluid Levels: Low fluid levels can cause overheating.</h2>
+   <p>Maintain Fluid Levels: Regularly check and maintain fluid levels. </p>
+</div>
+<div class="popup" id="popupN">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Blocked Cooling Lines: Blocked cooling lines can prevent proper cooling.</h2>
+   <p>Clean Cooling Lines: Ensure cooling lines are clear and unobstructed.</p>
+</div>
+<div class="popup" id="popupO">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2> Faulty Cooling Fan: A malfunctioning cooling fan can lead to overheating. </h2>
+   <p>Repair or Replace Cooling Fan: Fix or replace a faulty cooling fan.
+   </p>
+</div>
+<div class="popup" id="popupP">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Worn Bearings: Worn bearings can cause unusual noises.</h2>
+   <p>Replace Worn Bearings: Replace bearings as needed.
+   </p>
+</div>
+<div class="popup" id="popupQ">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Loose Components: Loose or damaged components can create noise
+   </h2>
+   <p>Tighten or Replace Components: Tighten or replace loose or damaged components </p>
+</div>
+<div class="popup" id="popupR">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Lack of Lubrication: Insufficient lubrication can lead to noise </h2>
+   <p>Lubricate Components: Ensure all components are properly lubricated.
+   </p>
+</div>
+
+<!-- Help Button and Popup -->
+<button class="help-button" onclick="openHelp()">Need More Help?</button>
+
+<div class="popup" id="helpPopup">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Need More Help?</h2>
+   <p>Contact our support team for additional assistance.</p>
+   <p>Email: support@carrepairhelp.com</p>
+   <p>Phone: +123 456 7890</p>
+</div>
+
+
+<!-- Help Button -->
+<button class="help-button" onclick="openHelpPage()">Need More Help?</button>
+
+<script>
+   
+   function optionClicked(option) {
+       document.querySelectorAll(".popup").forEach(popup => popup.style.display = "none");
+       const popup = document.getElementById(`popup${option}`);
+       if (popup) {
+           popup.style.display = "block";
+           document.getElementById("overlay").style.display = "block";
+       }
+   }
+   
+   function closePopup() {
+       document.querySelectorAll(".popup").forEach(popup => popup.style.display = "none");
+       document.getElementById("overlay").style.display = "none";
+   }
+   
+   // Search Functionality
+   function searchProblems() {
+       const input = document.getElementById("searchInput").value.toLowerCase();
+       const cards = document.querySelectorAll(".card");
+   
+       cards.forEach(card => {
+           const cardText = card.querySelector("p").textContent.toLowerCase();
+           card.style.display = cardText.includes(input) ? "block" : "none";
+       });
+   }
+   
+
+function openHelpPage() {
+   window.location.href = "http://127.0.0.1:5000/query";  // Redirect to the query page
+}
+
+function searchProblems() {
+   const input = document.getElementById("searchInput").value.toLowerCase();
+   alert(`Searching for: ${input}`);
+}
+</script>
+
+
+
+
+<!-- ------------------------------------------Chat Bot---------------------------------------------- -->\
+ 
+
+
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-image: url('/Users/aditya/Desktop/W.png'); /* Replace with your image path */
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        margin: 0;
+    }
+
+    /* Chatbot styles */
+    .chat-button {
+        position: fixed;
+        bottom: 20px;
+        left: 20px; /* Move the button to the left corner */
+        background-color: #4caf50; /* Green color */
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        text-align: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease;
+    }
+
+    .chat-button:hover {
+        transform: scale(1.1);
+    }
+
+    .chat-window {
+        display: none;
+        position: fixed;
+        bottom: 90px;
+        left: 20px; /* Adjusted for left side */
+        width: 350px;
+        height: 500px;
+        border: 2px solid #4caf50; /* Green border */
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        overflow: hidden;
+    }
+
+    .chat-header {
+        background-color: #4caf50; /* Green header */
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 500;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .chat-messages {
+        height: calc(100% - 150px);
+        overflow-y: auto;
+        padding: 10px;
+        background: #f9fff4; /* Light green background */
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .chat-messages div {
+        padding: 8px 12px;
+        border-radius: 10px;
+        max-width: 80%;
+    }
+
+    .user-message {
+        background-color: #4caf50; /* Green user messages */
+        color: white;
+        align-self: flex-end;
+    }
+
+    .bot-message {
+        background-color: #dff2df; /* Light green bot messages */
+        color: #333;
+        align-self: flex-start;
+    }
+
+    .chat-input {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px;
+        border-top: 1px solid #4caf50; /* Green border */
+        background: #f4f4f4;
+    }
+
+    .chat-input input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 5px;
+        flex-grow: 1;
+    }
+
+    .chat-input button {
+        padding: 10px;
+        background-color: #4caf50; /* Green button */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    .chat-input label {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .chat-input input[type="file"] {
+        display: none;
+    }
+
+    .chat-input button:hover {
+        background-color: #388e3c; /* Darker green on hover */
+    }
+
+    .chat-image {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 10px;
+        margin-top: 5px;
+    }
+</style>
+</head>
+<body>
+
+<!-- Chatbot Button -->
+<button class="chat-button" onclick="toggleChat()">💬</button>
+
+<!-- Chatbot Window -->
+<div class="chat-window" id="chatWindow">
+<div class="chat-header">Car Repair Assistant</div>
+<div class="chat-messages" id="chatMessages">
+    <div class="bot-message">Hello! How can I assist you with your car today?</div>
+</div>
+<div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+    <label for="chatFileInput" class="upload-btn">📷</label>
+    <input type="file" id="chatFileInput" accept="image/*" onchange="previewImage()">
+</div>
+</div>
+
+<script>
+// Chatbot functionality
+function toggleChat() {
+    const chatWindow = document.getElementById("chatWindow");
+    chatWindow.style.display = chatWindow.style.display === "block" ? "none" : "block";
+}
+
+function sendMessage() {
+    const input = document.getElementById("chatInput");
+    const messages = document.getElementById("chatMessages");
+    const userMessage = input.value.trim();
+
+    if (userMessage) {
+        const userMessageElement = document.createElement("div");
+        userMessageElement.className = "user-message";
+        userMessageElement.textContent = userMessage;
+        messages.appendChild(userMessageElement);
+
+        // Simulate chatbot response
+        const botMessageElement = document.createElement("div");
+        botMessageElement.className = "bot-message";
+        botMessageElement.textContent = "Bot: Thank you for sharing. Let me assist you!";
+        messages.appendChild(botMessageElement);
+
+        messages.scrollTop = messages.scrollHeight; // Auto-scroll
+        input.value = ""; // Clear input
+    }
+}
+
+function previewImage() {
+    const fileInput = document.getElementById("chatFileInput");
+    const file = fileInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const messages = document.getElementById("chatMessages");
+            const userMessageElement = document.createElement("div");
+            userMessageElement.className = "user-message";
+
+            // Create image element for the uploaded file
+            const img = document.createElement("img");
+            img.className = "chat-image";
+            img.src = event.target.result;
+            img.alt = "Uploaded Image";
+
+            userMessageElement.appendChild(img);
+            messages.appendChild(userMessageElement);
+
+            // Simulate chatbot response
+            const botMessageElement = document.createElement("div");
+            botMessageElement.className = "bot-message";
+            botMessageElement.textContent = "Bot: Image received. I'll analyze the issue shortly!";
+            messages.appendChild(botMessageElement);
+
+            messages.scrollTop = messages.scrollHeight; // Auto-scroll
+            fileInput.value = ""; // Clear file input
+        };
+        reader.readAsDataURL(file);
+    } else {
+        alert("Please select an image to upload.");
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Car Repair Help</title>
+   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+   <style>
+      body {
+           font-family: 'Roboto', sans-serif;
+           background-color: #f9f9f9;
+           color: #333;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           padding: 20px;
+           margin: 0;
+       }
+
+       header {
+           width: 100%;
+           background-color: #333;
+           color: white;
+           padding: 10px 20px;
+           text-align: center;
+           font-size: 24px;
+       }
+
+       .content {
+           max-width: 800px;
+           text-align: center;
+           margin-top: 20px;
+       }
+
+       .content h1 {
+           color: #2e7d32;
+           font-size: 28px;
+       }
+
+       .search-bar {
+           margin: 20px 0;
+           display: flex;
+           justify-content: center;
+       }
+
+       .search-bar input {
+           padding: 10px;
+           font-size: 16px;
+           border: 1px solid #ccc;
+           border-radius: 5px;
+           flex: 1;
+           max-width: 500px;
+       }
+
+       .search-bar button {
+           padding: 10px 20px;
+           margin-left: 5px;
+           font-size: 16px;
+           background-color: #4CAF50;
+           color: white;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+       }
+
+       .search-bar button:hover {
+           background-color: #45a049;
+       }
+
+       .cards-container {
+           display: grid;
+           grid-template-columns: repeat(3, 200px);
+           row-gap: 100px;
+           column-gap: 60px;
+           justify-content: center;
+           margin-top: 30px;
+       }
+
+       .card {
+           padding: 20px;
+           border-radius: 10px;
+           background-color: white;
+           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+           text-align: center;
+           cursor: pointer;
+           transition: transform 0.3s, box-shadow 0.3s;
+       }
+
+       .card:hover {
+           transform: translateY(-5px);
+           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+       }
+
+       .card h3 {
+           margin: 0;
+           color: #2e7d32;
+           font-size: 24px;
+       }
+       /* Ensuring select stays in the frame */
+       .card select {
+           max-width: 100%;
+           width: 100%;
+           margin-top: 10px;
+           padding: 5px;
+           box-sizing: border-box; /* Ensures padding is contained */
+           border: 1px solid #ccc;
+           border-radius: 5px;
+       }
+
+
+       .popup {
+           display: none;
+           position: fixed;
+           left: 50%;
+           top: 50%;
+           transform: translate(-50%, -50%);
+           background-color: #fff;
+           padding: 20px;
+           border: 1px solid #ddd;
+           border-radius: 10px;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+           z-index: 1000;
+           width: 300px;
+           text-align: center;
+       }
+
+       .popup h2 {
+           margin-top: 0;
+       }
+
+       .popup .close {
+           display: block;
+           text-align: right;
+           cursor: pointer;
+           color: #888;
+           font-size: 18px;
+       }
+
+       .popup .close:hover {
+           color: #555;
+       }
+
+       .overlay {
+           display: none;
+           position: fixed;
+           left: 0;
+           top: 0;
+           width: 100%;
+           height: 100%;
+           background: rgba(0, 0, 0, 0.5);
+           z-index: 999;
+       }
+       /* Footer Styles */
+       footer {
+           width: 100%;
+           background-color: #333;
+           color: white;
+           padding: 20px 0;
+           margin-top: 40px;
+       }
+
+       .footer-container {
+           display: flex;
+           justify-content: space-around;
+           max-width: 1200px;
+           margin: 0 auto;
+           text-align: left;
+       }
+
+       .footer-section {
+           width: 30%;
+           padding: 0 15px;
+       }
+
+       .footer-section h3 {
+           margin-top: 0;
+           margin-bottom: 10px;
+           color: #f1f1f1;
+           font-size: 20px;
+       }
+
+       .footer-section p {
+           margin: 5px 0;
+           font-size: 14px;
+           color: #ccc;
+       }
+
+       @media (max-width: 768px) {
+           .footer-container {
+               flex-direction: column;
+               text-align: center;
+           }
+
+           .footer-section {
+               width: 100%;
+               margin-bottom: 20px;
+           }
+       }
+
+       /* Help Button Styles */
+       .help-button {
+           position: fixed;
+           bottom: 20px;
+           right: 20px;
+           background-color: #4CAF50;
+           color: white;
+           padding: 15px 20px;
+           font-size: 16px;
+           border: none;
+           border-radius: 50px;
+           cursor: pointer;
+           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+           transition: background-color 0.3s, transform 0.3s;
+       }
+
+       .help-button:hover {
+           background-color: #45a049;
+           transform: scale(1.05);
+       }
+   </style>
+</head>
+<body>
+
+
+<header>
+   <h1>Car Repair Assistance</h1>
+</header>
+
+<div class="content">
+   <h1>BRAKES SYSTEMS</h1>
+   <p>LEARN HOW TO MAINTAIN AND REPAIR YOUR BRAKES.</p>
+
+   <div class="search-bar">
+       <input type="text" id="searchInput" placeholder="Search your problem...">
+       <button onclick="searchProblems()">Search</button>
+   </div>
+
+   <div class="cards-container">
+       <div class="card">
+           <h3>1</h3>
+           <p>Squeaking or Squealing Noises</p>
+           <select onchange="optionClicked(this.value)">
+               <option value="" selected disabled>Select Option</option>
+               <option value="A">Worn-Out Brake Pads</option>
+               <option value="B">Dust or Debris on Brake Pads</option>
+               <option value="C">Glazed Brake Pads or Rotors</option>
+           </select>
+       </div>
+       <div class="card">
+           <h3>2</h3>
+           <p>Grinding Noises </p>
+           <select onchange="optionClicked(this.value)">
+               <option value="" selected disabled>Select Option</option>
+               <option value="D">Warped Brake Rotors</option>
+               <option value="E">Contaminated Brake Pads</option>
+               <option value="F">Prevent Contamination:
+               </option>
+           </select>
+       </div>
+       <div class="card">
+           <h3>3</h3>
+           <p>Soft or Mushy Brake Pedal</p>
+           <select onchange="optionClicked(this.value)">
+               <option value="" selected disabled>Select Option</option>
+               <option value="G">Air in the Brake Lines</option>
+               <option value="H"> Brake Fluid Leak</option>
+               <option value="I"> Worn Master Cylinder</option>
+           </select>
+       </div>
+       <div class="card">
+           <h3>4</h3>
+           <p> Vibrations or Pulsations When Braking </p>
+           <select onchange="optionClicked(this.value)">
+               <option value="" selected disabled>Select Option</option>
+               <option value="J">Warped Brake Rotors</option>
+               <option value="K">Uneven Brake Pad Wear</option>
+               <option value="L"> Brake Drum or Rotor Out of Balance</option>
+           </select>
+       </div>
+       <div class="card">
+           <h3>5</h3>
+           <p>Brake Light on Dashboard Stays On</p>
+           <select onchange="optionClicked(this.value)">
+               <option value="" selected disabled>Select Option</option>
+               <option value="M"> Parking Brake Engaged</option>
+               <option value="N">Low Brake Fluid Level</option>
+               <option value="O">Faulty Brake Light Switch</option>
+           </select>
+       </div>
+       <div class="card">
+           <h3>6</h3>
+           <p>Vehicle Pulls to One Side When Braking </p>
+           <select onchange="optionClicked(this.value)">
+               <option value="" selected disabled>Select Option</option>
+               <option value="P">Uneven Brake Pad Wear</option>
+               <option value="Q">Sticking Brake Caliper</option>
+               <option value="R"> Uneven Tire Pressure</option>
+           </select>
+       </div>
+   </div>
+</div>
+
+<footer>
+   <div class="footer-container">
+       <div class="footer-section">
+           <h3>About Us</h3>
+           <p>We are committed to helping you solve car-related problems efficiently and affordably.</p>
+       </div>
+       <div class="footer-section">
+           <h3>Help</h3>
+           <p>Need assistance? Browse our FAQs or contact support for more information.</p>
+       </div>
+       <div class="footer-section">
+           <h3>Contact</h3>
+           <p>Email: support@carrepairhelp.com</p>
+           <p>Phone: +123 456 7890</p>
+       </div>
+   </div>
+</footer>
+<!-- Popups and Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Popups for different options -->
+<div class="popup" id="popupA">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2> Inspect Brake Pads:</h2>
+   <p>Check the thickness of the brake pads. If they are below the recommended thickness, they need to be replaced.
+
+       Replace Brake Pads:
+       
+       Replace the worn-out brake pads with new ones. Ensure to use high-quality brake pads for better performance and longevity.
+       Regular Maintenance:
+
+Regularly inspect the brake pads during routine maintenance to catch wear early and prevent further damage.
+</p>
+</div>
+
+<div class="popup" id="popupB">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Clean Brake Components:</h2>
+   <p>Use a brake cleaner to remove dust and debris from the brake pads and rotors. Ensure the components are thoroughly dried before reassembly.
+
+       Inspect for Damage:
+       
+       While cleaning, inspect the brake pads and rotors for any signs of damage or excessive wear.
+       
+       Regular Cleaning:
+       
+       Keep the brake components clean by regularly washing the wheels and brakes, especially if driving in dusty or dirty conditions.
+        </p>
+    <h2>CHECK AND REPLACE SPARK PULG:</h2>
+ <img src="/">
+</div>
+<div class="popup" id="popupC">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Resurface or Replace Rotors:</h2>
+   <p>If the rotors are glazed, they can be resurfaced to remove the glaze. If resurfacing is not possible, replace the rotors.
+
+       Replace Glazed Brake Pads:
+       
+       Replace the glazed brake pads with new ones. Ensure the new pads are properly bedded in to prevent glazing.
+       
+       Adjust Driving Habits:
+       
+       Avoid hard or excessive braking to prevent overheating the brake pads and rotors. Drive more smoothly and gradually to reduce stress on the braking system.. </p>
+</div>
+<div class="popup" id="popupD">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Inspect Brake Rotors:</h2>
+   <p>Check the brake rotors for warping or uneven surfaces. This can be done using a dial indicator to measure runout.
+
+       Resurface or Replace Rotors:
+       
+       Resurface the rotors to ensure a smooth, even surface. If the rotors are severely warped or too thin to resurface, replace them with new ones.
+       
+       Proper Installation:
+       
+       Ensure the rotors are installed correctly and evenly torqued to prevent warping..  </p>
+</div>
+<div class="popup" id="popupE">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Inspect Brake Pads:</h2>
+   <p>Check the brake pads for any signs of contamination.
+
+       Clean or Replace Pads:
+       
+       If the contamination is minimal, clean the brake pads with a brake cleaner. If the pads are heavily contaminated, replace them with new ones.
+       
+       Prevent Contamination:
+       
+       Ensure that any leaks in the brake system are repaired promptly to prevent contamination. Handle brake components with clean hands or gloves to avoid transferring oil or grease.
+       .</p>
+</div>
+<div class="popup" id="popupF">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h>Allow Brakes to Cool:</h2>
+   <p>If you notice a burning smell, safely pull over and allow the brakes to cool down before continuing to drive.
+
+       Adjust Driving Habits:
+       
+       Avoid prolonged or aggressive braking by using engine braking or downshifting when driving downhill. Maintain a safe following distance to reduce the need for sudden stops.
+       
+       Inspect Brake Components:
+       
+       After cooling, inspect the brake pads and rotors for any signs of damage or glazing. Replace any components that show excessive wear or heat damage.
+       . </p>
+</div>
+<div class="popup" id="popupG">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2> Bleed the Brake System:</h2>
+   <p> Use a brake bleeder kit to remove air from the brake lines. Start with the brake farthest from the master cylinder and work your way closer.
+
+       Check for Leaks:
+       
+       Inspect the entire brake system for any leaks that might have allowed air to enter. Repair any leaks before bleeding the system.
+       
+       Regular Maintenance:
+       
+       Periodically check and bleed the brake system as part of regular maintenance to prevent air buildup. </p>
+</div>
+<div class="popup" id="popupH">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2> Inspect for Leaks:</h2>
+   <p> Check all brake lines, hoses, and connections for signs of fluid leaks. Look for wet spots or drips under the car.
+
+       Repair or Replace Damaged Components:
+       
+       Replace any damaged or leaking brake lines, hoses, or connections. Ensure all fittings are secure and tight.
+       
+       Refill and Bleed the Brake System:
+       
+       After repairing leaks, refill the brake fluid reservoir with the correct type of brake fluid and bleed the system to remove any air</p>
+</div>
+<div class="popup" id="popupI">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Inspect the Master Cylinder:</h2>
+   <p> Check the master cylinder for signs of wear or internal leaks. Look for brake fluid around the master cylinder area.
+
+       Replace the Master Cylinder:
+       
+       If the master cylinder is worn or failing, replace it with a new one. Ensure all connections are properly tightened and secured.
+       
+       Bleed the Brake System:
+       
+       After replacing the master cylinder, bleed the brake system to remove any air that may have entered during the replacement process.
+       . </p>
+</div>
+<div class="popup" id="popupJ">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Inspect Brake Rotors:</h2>
+   <p>Check the brake rotors for warping or uneven surfaces. This can be done using a dial indicator to measure rotor runout.
+
+       Resurface or Replace Rotors:
+       
+       If the rotors are slightly warped, they can be resurfaced to restore a smooth, even surface. If they are severely warped or too thin, replace them with new ones.
+       
+       Proper Installation:
+       
+       Ensure that the rotors are installed correctly and the wheel lug nuts are torqued evenly to prevent future warping.</p>
+</div>
+<div class="popup" id="popupK">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Inspect Brake Pads:</h2>
+   <p>Check the brake pads for uneven wear. Uneven thickness indicates a problem with the calipers or braking system alignment.
+
+       Replace Brake Pads:
+       
+       Replace the unevenly worn brake pads with new ones. Ensure to replace both pads on the same axle to maintain balanced braking.
+       
+       Check Calipers and Hardware:
+       
+       Inspect the brake calipers and related hardware for proper alignment an </p>
+</div>
+<div class="popup" id="popupL">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Inspect for Balance: </h2>
+   <p>Check the brake drum or rotor for balance issues. A qualified mechanic can use specialized equipment to test and balance the components.
+
+       Balance or Replace:       
+       If the drum or rotor is found to be out of balance, have it balanced by a professional. If balancing is not possible due to damage, replace the component with a new one.
+       
+       Regular Maintenance:
+       
+       Regularly inspect the braking components for signs of imbalance or damage, and address any issues promptly to maintain smooth braking performance.. </p>
+</div>
+<div class="popup" id="popupM">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2> Check the Parking Brake:</h2>
+   <p>Ensure the parking brake is fully released. Sometimes, it might not be fully disengaged even if it feels like it is.
+
+       Inspect the Parking Brake Switch:
+       
+       If the brake light remains on, there might be an issue with the parking brake switch. Have it inspected and replaced if necessary.
+       
+       Adjust or Replace the Parking Brake:
+       
+       If the parking brake lever is hard to release, it might need adjustment or replacement. </p>
+</div>
+<div class="popup" id="popupN">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Check Brake Fluid Level:</h2>
+   <p>Inspect the brake fluid reservoir and refill it to the recommended level if it's low.
+
+       Inspect for Leaks:
+       
+       Look for any signs of brake fluid leaks around the brake lines, hoses, or master cylinder. Repair any leaks found.
+       
+       Bleed the Brake System:
+       
+       After refilling the brake fluid, bleed the brake system to remove any air that might have entered the lines</p>
+</div>
+<div class="popup" id="popupO">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Inspect the Brake Light Switch: </h2>
+   <p>Check the brake light switch for any signs of damage or malfunction.
+
+       Replace the Brake Light Switch:
+       
+       If the switch is faulty, replace it with a new one. Ensure all connections are properly secured during installation.
+       
+       Test the New Switch:
+       
+       After replacing the switch, test the brake light to ensure it turns on and off correctly with the brake pedal.
+        </p>
+</div>
+<div class="popup" id="popupP">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Inspect Brake Pads:</h2>
+   <p>Check the brake pads for uneven wear. Uneven thickness indicates a problem with the calipers or braking system alignment.
+
+       Replace Brake Pads:
+       
+       Replace the unevenly worn brake pads with new ones. Ensure to replace both pads on the same axle to maintain balanced braking.
+       
+       Check Calipers and Hardware:
+       
+       Inspect the brake calipers and related hardware for proper alignment and function. Clean and lubricate any sticking components to ensure even wear. </p>
+</div>
+<div class="popup" id="popupQ">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2> Inspect Brake Calipers:</h2>
+   <p>Check the brake calipers for signs of sticking or improper operation.
+
+       Clean and Lubricate Calipers:
+       
+       Clean the brake calipers and lubricate the caliper pins to ensure smooth operation.
+       
+       Replace Faulty Calipers:
+       
+       If the calipers are found to be faulty, replace them with new ones to ensure balanced braking.
+        </p>
+</div>
+<div class="popup" id="popupR">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Check Tire Pressure: </h2>
+   <p> Regularly check the tire pressure and ensure all tires are inflated to the recommended levels specified by the vehicle manufacturer.
+
+       Inspect Tires for Damage
+       
+       Check the tires for any signs of damage or uneven wear, which can affect traction and braking performance.
+       
+       Maintain Proper Tire Pressure:
+       
+       Maintain proper tire pressure through regular checks and adjustments to ensure even traction and balanced braking.</p>
+</div>
+
+<!-- Help Button and Popup -->
+<button class="help-button" onclick="openHelp()">Need More Help?</button>
+
+<div class="popup" id="helpPopup">
+   <span class="close" onclick="closePopup()">&times;</span>
+   <h2>Need More Help?</h2>
+   <p>Contact our support team for additional assistance.</p>
+   <p>Email: support@carrepairhelp.com</p>
+   <p>Phone: +123 456 7890</p>
+</div>
+
+
+<!-- Help Button -->
+<button class="help-button" onclick="openHelpPage()">Need More Help?</button>
+
+<script>
+   
+   function optionClicked(option) {
+       document.querySelectorAll(".popup").forEach(popup => popup.style.display = "none");
+       const popup = document.getElementById(`popup${option}`);
+       if (popup) {
+           popup.style.display = "block";
+           document.getElementById("overlay").style.display = "block";
+       }
+   }
+   
+   function closePopup() {
+       document.querySelectorAll(".popup").forEach(popup => popup.style.display = "none");
+       document.getElementById("overlay").style.display = "none";
+   }
+   
+   // Search Functionality
+   function searchProblems() {
+       const input = document.getElementById("searchInput").value.toLowerCase();
+       const cards = document.querySelectorAll(".card");
+   
+       cards.forEach(card => {
+           const cardText = card.querySelector("p").textContent.toLowerCase();
+           card.style.display = cardText.includes(input) ? "block" : "none";
+       });
+   }
+   
+
+function openHelpPage() {
+   window.location.href = "http://127.0.0.1:5000/query";  // Redirect to the query page
+}
+
+function searchProblems() {
+   const input = document.getElementById("searchInput").value.toLowerCase();
+   alert(`Searching for: ${input}`);
+}
+</script>
+
+
+
+<!-- -------------------------------------Chat Bot------------------------------------------ -->
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-image: url('/Users/aditya/Desktop/W.png'); /* Replace with your image path */
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        margin: 0;
+    }
+
+    /* Chatbot styles */
+    .chat-button {
+        position: fixed;
+        bottom: 20px;
+        left: 20px; /* Move the button to the left corner */
+        background-color: #4caf50; /* Green color */
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        text-align: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease;
+    }
+
+    .chat-button:hover {
+        transform: scale(1.1);
+    }
+
+    .chat-window {
+        display: none;
+        position: fixed;
+        bottom: 90px;
+        left: 20px; /* Adjusted for left side */
+        width: 350px;
+        height: 500px;
+        border: 2px solid #4caf50; /* Green border */
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        overflow: hidden;
+    }
+
+    .chat-header {
+        background-color: #4caf50; /* Green header */
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 500;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .chat-messages {
+        height: calc(100% - 150px);
+        overflow-y: auto;
+        padding: 10px;
+        background: #f9fff4; /* Light green background */
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .chat-messages div {
+        padding: 8px 12px;
+        border-radius: 10px;
+        max-width: 80%;
+    }
+
+    .user-message {
+        background-color: #4caf50; /* Green user messages */
+        color: white;
+        align-self: flex-end;
+    }
+
+    .bot-message {
+        background-color: #dff2df; /* Light green bot messages */
+        color: #333;
+        align-self: flex-start;
+    }
+
+    .chat-input {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px;
+        border-top: 1px solid #4caf50; /* Green border */
+        background: #f4f4f4;
+    }
+
+    .chat-input input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 5px;
+        flex-grow: 1;
+    }
+
+    .chat-input button {
+        padding: 10px;
+        background-color: #4caf50; /* Green button */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    .chat-input label {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .chat-input input[type="file"] {
+        display: none;
+    }
+
+    .chat-input button:hover {
+        background-color: #388e3c; /* Darker green on hover */
+    }
+
+    .chat-image {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 10px;
+        margin-top: 5px;
+    }
+</style>
+</head>
+<body>
+
+<!-- Chatbot Button -->
+<button class="chat-button" onclick="toggleChat()">💬</button>
+
+<!-- Chatbot Window -->
+<div class="chat-window" id="chatWindow">
+<div class="chat-header">Car Repair Assistant</div>
+<div class="chat-messages" id="chatMessages">
+    <div class="bot-message">Hello! How can I assist you with your car today?</div>
+</div>
+<div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+    <label for="chatFileInput" class="upload-btn">📷</label>
+    <input type="file" id="chatFileInput" accept="image/*" onchange="previewImage()">
+</div>
+</div>
+
+<script>
+// Chatbot functionality
+function toggleChat() {
+    const chatWindow = document.getElementById("chatWindow");
+    chatWindow.style.display = chatWindow.style.display === "block" ? "none" : "block";
+}
+
+function sendMessage() {
+    const input = document.getElementById("chatInput");
+    const messages = document.getElementById("chatMessages");
+    const userMessage = input.value.trim();
+
+    if (userMessage) {
+        const userMessageElement = document.createElement("div");
+        userMessageElement.className = "user-message";
+        userMessageElement.textContent = userMessage;
+        messages.appendChild(userMessageElement);
+
+        // Simulate chatbot response
+        const botMessageElement = document.createElement("div");
+        botMessageElement.className = "bot-message";
+        botMessageElement.textContent = "Bot: Thank you for sharing. Let me assist you!";
+        messages.appendChild(botMessageElement);
+
+        messages.scrollTop = messages.scrollHeight; // Auto-scroll
+        input.value = ""; // Clear input
+    }
+}
+
+function previewImage() {
+    const fileInput = document.getElementById("chatFileInput");
+    const file = fileInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const messages = document.getElementById("chatMessages");
+            const userMessageElement = document.createElement("div");
+            userMessageElement.className = "user-message";
+
+            // Create image element for the uploaded file
+            const img = document.createElement("img");
+            img.className = "chat-image";
+            img.src = event.target.result;
+            img.alt = "Uploaded Image";
+
+            userMessageElement.appendChild(img);
+            messages.appendChild(userMessageElement);
+
+            // Simulate chatbot response
+            const botMessageElement = document.createElement("div");
+            botMessageElement.className = "bot-message";
+            botMessageElement.textContent = "Bot: Image received. I'll analyze the issue shortly!";
+            messages.appendChild(botMessageElement);
+
+            messages.scrollTop = messages.scrollHeight; // Auto-scroll
+            fileInput.value = ""; // Clear file input
+        };
+        reader.readAsDataURL(file);
+    } else {
+        alert("Please select an image to upload.");
+    }
+}
+</script>
+
+</body>
+</html>
+
+
